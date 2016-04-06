@@ -10,9 +10,9 @@ class Employee
     @salary = hash[:salary]
   end
 
-  # def first_name
-  #   @first_name
-  # end
+  def first_name
+    @first_name
+  end
 
   def print_info
     puts "#{@first_name} #{@last_name} makes #{@salary}"
