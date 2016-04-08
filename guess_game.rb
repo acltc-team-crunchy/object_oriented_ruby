@@ -6,20 +6,21 @@
 # 6. CHALLENGE: Change the interface with better prompts, ASCII art, etc. Be as creative as you'd like!
 
 class Card
-  attr_reader :question, :answer
+  attr_reader :question, :answer, :choices
 
-  def initialize(question, answer)
-    @question = question
-    @answer = answer
+  def initialize(hash)
+    @question = hash[:question]
+    @answer = hash[:answer]
+    @choices = hash[:choices]
   end
 end
 
 class Deck
 
-  def initialize(hash)
+  def initialize(question_answers)
     @cards = []
-    hash.each do |question, answer|
-      @cards << Card.new(question, answer)
+    question_answers.each do |hash|
+      @cards << Card.new(hash)
     end
   end
 
@@ -28,23 +29,35 @@ class Deck
   end
 
   def draw_card
-    drawn_card = @cards.pop
-    return drawn_card
+    @cards.pop
   end
     
 end
 
-trivia_data = {
-  "What is the capital of Illinois?" => "Springfield",
-  "Is Africa a country or a continent?" => "Continent",
-  "Tug of war was once an Olympic event. True or false?" => "True"
-}
+trivia_data = [
+  {
+    question: "What is the capital of Illinois?",
+    answer: "Springfield",
+    choices: [" Juneau", "Sacramento", "Springfield"]
+  },
+  {
+    question: "Is Africa a country or a continent?",
+    answer: "Continent",
+    choices: ["country", "continent"]
+  },
+  {
+    question: "Tug of war was once an Olympic event. True or false?",
+    answer: "true",
+    choices: ["true", "false"]
+  }
+]
 
 deck = Deck.new(trivia_data) # deck is an instance of the Deck class
 
 while deck.remaining_cards > 0
   card = deck.draw_card # card is an instance of the Card class
   puts card.question
+  puts "You must choose between #{card.choices.join(' ,')}"
   user_answer = gets.chomp
   if user_answer.downcase == card.answer.downcase
     puts "Correct!"
